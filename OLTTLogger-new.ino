@@ -9,16 +9,12 @@
  *  
  */
 
+#include "DFRobot_I2CMultiplexer.h"
 #include "MegunoLink.h" // Helpful functions for communicating with MegunoLink. 
 #include <OneWire.h>
 #include <DallasTemperature.h> 
 #include <Wire.h>
 #include "Adafruit_MPRLS.h"
-
-//  MegunoPlot stuff
-Message Msg("CSV"); //"Data" = the taget message channel (remember to select this in megunolink)
-// The plot we are sending data to.
-TimePlot TempPlot1("Temp1"), TempPlot2("Temp2"), TempPlot3("Temp3"), TempPlot4("Temp4"), TempPlot5("Temp5"), TempPlot6("Temp6"), PressurePlot("Pressure");
 
 // You dont *need* a reset and EOC pin for most uses, so we set to -1 and don't connect
 #define RESET_PIN  -1  // set to any GPIO pin # to hard-reset on begin()
@@ -28,8 +24,17 @@ TimePlot TempPlot1("Temp1"), TempPlot2("Temp2"), TempPlot3("Temp3"), TempPlot4("
 #define ONE_WIRE_BUS 22
 #define PRESSURE_SCA 18 
 #define PRESSURE_SCL 19
+
+//  MegunoPlot stuff
+Message Msg("CSV"); //"Data" = the taget message channel (remember to select this in megunolink)
+// The plot we are sending data to.
+TimePlot TempPlot1("Temp1"), TempPlot2("Temp2"), TempPlot3("Temp3"), TempPlot4("Temp4"), TempPlot5("Temp5"), 
+TempPlot6("Temp6"), PressurePlot1("Pressure1"), PressurePlot2("Pressure2"), PressurePlot3("Pressure3");
+
 //
 Adafruit_MPRLS mpr = Adafruit_MPRLS(RESET_PIN, EOC_PIN);
+// I2C multiplexer
+DFRobot_I2CMultiplexer I2CMulti(0x70);
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWireBus(ONE_WIRE_BUS);
@@ -51,11 +56,15 @@ int oneWireInit() {
 
 void setup()
 {
+  pinMode(PRESSURE_SCA,INPUT);
+  pinMode(PRESSURE_SCL,INPUT);
+  // One Wire Thermocouple Sensors 
+  pinMode(ONE_WIRE_BUS,INPUT_PULLUP);  
+  Serial.begin(9600);
+  
   // MegunoPlot stuff
   Msg.Clear();
   Msg.StartLogging();
-  Serial.begin(9600);
-  //
   
   TempPlot1.SetTitle("Temp1");
   TempPlot1.SetXlabel("Time");
@@ -63,29 +72,33 @@ void setup()
   TempPlot1.SetXRange(1/30);
   TempPlot1.SetSeriesProperties(F("Temp1"), Plot::Red, Plot::Solid, 2, Plot::FilledCircle);
 
-  PressurePlot.SetTitle("Pressure");
-  PressurePlot.SetXlabel("Time");
-  PressurePlot.SetYlabel("hPa");
-  PressurePlot.SetXRange(1/30);
-  PressurePlot.SetSeriesProperties("Pressure", Plot::Blue, Plot::Solid, 2, Plot::FilledCircle);
- 
- 
+  PressurePlot1.SetTitle("Pressure");
+  PressurePlot1.SetXlabel("Time");
+  PressurePlot1.SetYlabel("hPa");
+  PressurePlot1.SetXRange(1/30);
+  PressurePlot1.SetSeriesProperties(F("Pressure1"), Plot::Blue, Plot::Solid, 2, Plot::FilledCircle);
   // End Megunoplot stuff
-  pinMode(PRESSURE_SCA,INPUT);
-  pinMode(PRESSURE_SCL,INPUT);
-  // One Wire Thermocouple Sensors 
-  pinMode(ONE_WIRE_BUS,INPUT_PULLUP);  
 
-  if(oneWireInit()) Serial.println("Failed to communicate with MPRLS sensor, check wiring?");
-  // Start up the OneWire library
-  oneWireSensors.begin();
-  delay(100);
+
+  if(oneWireInit()) {
+    Serial.println("Failed to communicate with MPRLS sensor, check wiring?"); 
+  } else {
+    // Start up the OneWire library
+    oneWireSensors.begin();
+    delay(100);
+  }
 }
 
 void loop()
 {
-
-    float pressure_hPa = mpr.readPressure();
+    I2CMulti.selectPort(0); 
+    float pressure1_kPa = mpr.readPressure()/10;
+    delay(20);
+    I2CMulti.selectPort(1); 
+    float pressure2_kPa = mpr.readPressure()/10;
+    delay(20);
+    I2CMulti.selectPort(2); 
+    float pressure3_kPa = mpr.readPressure()/10;
     delay(20);
     oneWireSensors.requestTemperatures(); // Send the command to get temperatures
     
@@ -98,7 +111,9 @@ void loop()
 //  Serial.print("Requesting temperatures...");
 
 //  Serial.println("DONE");
-    Serial.printf("%4.2f, ", pressure_hPa);
+    Serial.printf("%4.2f, ", pressure1_kPa);
+    Serial.printf("%4.2f, ", pressure2_kPa);
+    Serial.printf("%4.2f, ", pressure3_kPa);
   
   for (uint8_t s=0; s < oneWireSensors.getDeviceCount(); s++) {
     // get the unique address 
@@ -145,7 +160,9 @@ void loop()
     smalladdr = (addr[6] << 8) | addr[7];
     TempPlot6.SendData("Temp6", oneWireSensors.getTempCByIndex(5));
 
-    PressurePlot.SendData("Pressure", pressure_hPa);
+    PressurePlot1.SendData("Pressure1", pressure1_kPa);
+    PressurePlot2.SendData("Pressure2", pressure2_kPa);
+    PressurePlot3.SendData("Pressure3", pressure3_kPa);
     delay(200);
 //  
 }
