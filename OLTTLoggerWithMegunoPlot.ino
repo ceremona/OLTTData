@@ -24,6 +24,7 @@
 #define ONE_WIRE_BUS 22
 #define PRESSURE_SCA 18 
 #define PRESSURE_SCL 19
+int ledState = LOW;
 
 //  MegunoPlot stuff
 Message Msg("CSV"); //"Data" = the taget message channel (remember to select this in megunolink)
@@ -31,10 +32,11 @@ Message Msg("CSV"); //"Data" = the taget message channel (remember to select thi
 TimePlot TempPlot1("Temp1"), TempPlot2("Temp2"), TempPlot3("Temp3"), TempPlot4("Temp4"), TempPlot5("Temp5"), 
 TempPlot6("Temp6"), PressurePlot1("Pressure1"), PressurePlot2("Pressure2"), PressurePlot3("Pressure3");
 
-//
-Adafruit_MPRLS mpr = Adafruit_MPRLS(RESET_PIN, EOC_PIN);
 // I2C multiplexer
 DFRobot_I2CMultiplexer I2CMulti(0x70);
+
+// Pressure sensors
+Adafruit_MPRLS mpr = Adafruit_MPRLS(RESET_PIN, EOC_PIN);
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWireBus(ONE_WIRE_BUS);
@@ -54,18 +56,29 @@ int I2CInit() {
   }
 }
 
+void blink(void) {
+  if (ledState == LOW) {
+      ledState = HIGH;
+  } else {
+      ledState = LOW;
+  }
+  digitalWrite(LED_BUILTIN, ledState);
+}
+
 void setup()
 {
+  Serial.begin(9600);
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PRESSURE_SCA,INPUT);
   pinMode(PRESSURE_SCL,INPUT);
   // One Wire Thermocouple Sensors 
   pinMode(ONE_WIRE_BUS,INPUT_PULLUP);  
-  Serial.begin(9600);
   
   // MegunoPlot stuff
   Msg.Clear();
   Msg.StartLogging();
-  /*
+  
+  /*  
   TempPlot1.SetTitle("Temp1");
   TempPlot1.SetXlabel("Time");
   TempPlot1.SetYlabel("Temp C");
@@ -78,16 +91,12 @@ void setup()
   PressurePlot1.SetXRange(1/30);
   PressurePlot1.SetSeriesProperties(F("Pressure1"), Plot::Blue, Plot::Solid, 2, Plot::FilledCircle);
   //End Megunoplot stuff
-  */ 
-
+  */
 
   if(I2CInit()) {
     Serial.println("Failed to communicate with MPRLS sensor, check wiring?"); 
-  } else {
-    // Start up the OneWire library
-    oneWireSensors.begin();
-    delay(100);
-  }
+  } 
+  oneWireSensors.begin();
 }
 
 void loop()
@@ -104,14 +113,7 @@ void loop()
     oneWireSensors.requestTemperatures(); // Send the command to get temperatures
     
   Msg.Begin(); 
-    
-//  Serial.print("Pressure (hPa): "); Serial.println(pressure_hPa);
-//  Serial.print("Pressure (PSI): "); Serial.println(pressure_hPa / 68.947572932);
-  // call sensors.requestTemperatures() to issue a global temperature 
-  // request to all devices on the bus
-//  Serial.print("Requesting temperatures...");
 
-//  Serial.println("DONE");
     Serial.printf("%4.2f, ", pressure1_kPa);
     Serial.printf("%4.2f, ", pressure2_kPa);
     Serial.printf("%4.2f, ", pressure3_kPa);
@@ -121,27 +123,11 @@ void loop()
     oneWireSensors.getAddress(addr, s);
     // just look at bottom two bytes, which is pretty likely to be unique
     int smalladdr = (addr[6] << 8) | addr[7];
-    
-//    Serial.print("Temperature for the device #"); Serial.print(s); 
-//    Serial.print(" with ID #"); Serial.print(smalladdr);
-//    Serial.print(" is: ");
       Serial.printf("%3.3f, ", oneWireSensors.getTempCByIndex(s)); 
   }
   Msg.End();
-    
     delay(20);
-
-   // const char* str = &temp;
-//    for (uint8_t s=0; s < oneWireSensors.getDeviceCount(); s++) {
-    // get the unique address 
- //      oneWireSensors.getAddress(addr, s);
-    // just look at bottom two bytes, which is pretty likely to be unique
-   //    int smalladdr = (addr[6] << 8) | addr[7];    
-//    Serial.print("Temperature for the device #"); Serial.print(s); 
-//    Serial.print(" with ID #"); Serial.print(smalladdr);
-//    Serial.print(" is: ");
-      //Serial.printf("%3.3f, ", oneWireSensors.getTempCByIndex(s));
-//    }      
+   
     oneWireSensors.getAddress(addr,0);
     int smalladdr = (addr[6] << 8) | addr[7];
     TempPlot1.SendData(F("Temp1"), oneWireSensors.getTempCByIndex(0));
@@ -164,6 +150,6 @@ void loop()
     PressurePlot1.SendData("Pressure1", pressure1_kPa);
     PressurePlot2.SendData("Pressure2", pressure2_kPa);
     PressurePlot3.SendData("Pressure3", pressure3_kPa);
-    delay(200);
-//  
+    delay(100);
+    blink(); 
 }
