@@ -14,6 +14,7 @@
 #include <DallasTemperature.h> 
 #include <Wire.h>
 #include "Adafruit_MPRLS.h"
+int ledState = LOW;
 
 // You dont *need* a reset and EOC pin for most uses, so we set to -1 and don't connect
 #define RESET_PIN  -1  // set to any GPIO pin # to hard-reset on begin()
@@ -46,6 +47,14 @@ int I2CInit(void) {
   }
 }
 
+void blink(void) {
+  if (ledState == LOW) {
+      ledState = HIGH;
+  } else {
+      ledState = LOW;
+  }
+  digitalWrite(LED_BUILTIN, ledState);
+}
 
 void setup(void)
 {
@@ -55,7 +64,8 @@ void setup(void)
   pinMode(PRESSURE_SCA,INPUT);
   pinMode(PRESSURE_SCL,INPUT);
   // One Wire Thermocouple Sensors 
-  pinMode(ONE_WIRE_BUS,INPUT_PULLUP);  
+  pinMode(ONE_WIRE_BUS,INPUT_PULLUP);
+  pinMode(LED_BUILTIN, OUTPUT);  
 
   if(I2CInit()) Serial.println("Failed to communicate with MPRLS Pressure port sensor, check wiring?");
   // Start up the OneWire library
@@ -96,4 +106,5 @@ void loop(void)
       Serial.printf("%3.3f, ", oneWireSensors.getTempCByIndex(s)); 
   }
   Serial.print("\n");
+  blink();
 }
