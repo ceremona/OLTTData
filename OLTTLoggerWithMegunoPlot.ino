@@ -122,8 +122,9 @@ void loop()
     // get the unique address 
     oneWireSensors.getAddress(addr, s);
     // just look at bottom two bytes, which is pretty likely to be unique
-    int smalladdr = (addr[6] << 8) | addr[7];
-      Serial.printf("%3.3f, ", oneWireSensors.getTempCByIndex(s)); 
+//    int smalladdr = (addr[6] << 8) | addr[7];
+//    Serial.print(" with ID #"); Serial.print(smalladdr);
+    Serial.printf("%3.3f, ", oneWireSensors.getTempCByIndex(s)); 
   }
   Msg.End();
     delay(20);

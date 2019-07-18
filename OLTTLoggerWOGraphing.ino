@@ -98,8 +98,7 @@ void loop(void)
     // get the unique address 
     oneWireSensors.getAddress(addr, s);
     // just look at bottom two bytes, which is pretty likely to be unique
-    int smalladdr = (addr[6] << 8) | addr[7];
-    
+    int smalladdr = (addr[6] << 8) | addr[7]; 
 //    Serial.print("Temperature for the device #"); Serial.print(s); 
 //    Serial.print(" with ID #"); Serial.print(smalladdr);
 //    Serial.print(" is: ");
