@@ -26,11 +26,20 @@
 #define PRESSURE_SCL 19
 int ledState = LOW;
 
+String Temp1 = "T_coldwater_bath";
+String Temp2 = "T_thimble_filter";
+String Temp3 = "T_mixing_chamber";
+String Temp4 = "T_separator_column";
+String Temp5 = "T_rotometer";
+String Pressure1 = "P_mixing_chamber";
+String Pressure2 = "P_separator_column";
+String Pressure3 = "P_rotometer";
+
 //  MegunoPlot stuff
 Message Msg("CSV"); //"Data" = the taget message channel (remember to select this in megunolink)
 // The plot we are sending data to.
-TimePlot TempPlot1("Temp1"), TempPlot2("Temp2"), TempPlot3("Temp3"), TempPlot4("Temp4"), TempPlot5("Temp5"), 
-TempPlot6("Temp6"), PressurePlot1("Pressure1"), PressurePlot2("Pressure2"), PressurePlot3("Pressure3");
+TimePlot TempPlot1((char*)Temp1.c_str()), TempPlot2((char*)Temp2.c_str()), TempPlot3((char*)Temp3.c_str()), TempPlot4((char*)Temp4.c_str()), TempPlot5((char*)Temp5.c_str()), PressurePlot1((char*)Pressure1.c_str()), PressurePlot2((char*)Pressure2.c_str()), PressurePlot3((char*)Pressure3.c_str());
+//TimePlot TempPlot1("Temp1"), TempPlot2("Temp2"), TempPlot3("Temp3"), TempPlot4("Temp4"), TempPlot5("Temp5"), PressurePlot1("Pressure1"), PressurePlot2("Pressure2"), PressurePlot3("Pressure3");
 
 // I2C multiplexer
 DFRobot_I2CMultiplexer I2CMulti(0x70);
@@ -122,7 +131,7 @@ void loop()
     // get the unique address 
     oneWireSensors.getAddress(addr, s);
     // just look at bottom two bytes, which is pretty likely to be unique
-//    int smalladdr = (addr[6] << 8) | addr[7];
+    int smalladdr = (addr[6] << 8) | addr[7];
 //    Serial.print(" with ID #"); Serial.print(smalladdr);
     Serial.printf("%3.3f, ", oneWireSensors.getTempCByIndex(s)); 
   }
@@ -131,26 +140,24 @@ void loop()
    
     oneWireSensors.getAddress(addr,0);
     int smalladdr = (addr[6] << 8) | addr[7];
-    TempPlot1.SendData(F("Temp1"), oneWireSensors.getTempCByIndex(0));
+    TempPlot1.SendData((char*)Temp1.c_str(), oneWireSensors.getTempCByIndex(0));
     oneWireSensors.getAddress(addr,1); 
     smalladdr = (addr[6] << 8) | addr[7];
-    TempPlot2.SendData("Temp2", oneWireSensors.getTempCByIndex(1));
+    TempPlot2.SendData((char*)Temp2.c_str(), oneWireSensors.getTempCByIndex(1));
     oneWireSensors.getAddress(addr,2); 
     smalladdr = (addr[6] << 8) | addr[7];
-    TempPlot3.SendData("Temp3", oneWireSensors.getTempCByIndex(2));
+    TempPlot3.SendData((char*)Temp3.c_str(), oneWireSensors.getTempCByIndex(2));
     oneWireSensors.getAddress(addr,3); 
     smalladdr = (addr[6] << 8) | addr[7];
-    TempPlot4.SendData("Temp4", oneWireSensors.getTempCByIndex(3));
+    TempPlot4.SendData((char*)Temp4.c_str(), oneWireSensors.getTempCByIndex(3));
     oneWireSensors.getAddress(addr,4); 
     smalladdr = (addr[6] << 8) | addr[7];
-    TempPlot5.SendData("Temp5", oneWireSensors.getTempCByIndex(4));
+    TempPlot5.SendData((char*)Temp5.c_str(), oneWireSensors.getTempCByIndex(4));
     oneWireSensors.getAddress(addr,5); 
-    smalladdr = (addr[6] << 8) | addr[7];
-    TempPlot6.SendData("Temp6", oneWireSensors.getTempCByIndex(5));
 
-    PressurePlot1.SendData("Pressure1", pressure1_kPa);
-    PressurePlot2.SendData("Pressure2", pressure2_kPa);
-    PressurePlot3.SendData("Pressure3", pressure3_kPa);
+    PressurePlot1.SendData((char*)Pressure1.c_str(), pressure1_kPa);
+    PressurePlot2.SendData((char*)Pressure2.c_str(), pressure2_kPa);
+    PressurePlot3.SendData((char*)Pressure3.c_str(), pressure3_kPa);
     delay(100);
     blink(); 
 }
