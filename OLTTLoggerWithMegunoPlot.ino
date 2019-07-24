@@ -32,8 +32,8 @@ String Temp3 = "T_mixing_chamber";
 String Temp4 = "T_separator_column";
 String Temp5 = "T_rotometer";
 String Pressure1 = "P_mixing_chamber";
-String Pressure2 = "P_separator_column";
-String Pressure3 = "P_rotometer";
+String Pressure2 = "P_rotometer";
+String Pressure3 = "P_separator_column";
 
 //  MegunoPlot stuff
 Message Msg("CSV"); //"Data" = the taget message channel (remember to select this in megunolink)
@@ -153,7 +153,7 @@ void loop()
     oneWireSensors.getAddress(addr,4); 
     smalladdr = (addr[6] << 8) | addr[7];
     TempPlot5.SendData((char*)Temp5.c_str(), oneWireSensors.getTempCByIndex(4));
-    oneWireSensors.getAddress(addr,5); 
+ //   oneWireSensors.getAddress(addr,5); 
 
     PressurePlot1.SendData((char*)Pressure1.c_str(), pressure1_kPa);
     PressurePlot2.SendData((char*)Pressure2.c_str(), pressure2_kPa);
