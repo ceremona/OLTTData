@@ -2,7 +2,7 @@
  * Cere Davis
  * @file OLTTLogger.ino
  * 
- * Logging OLTT data values from various sensors
+ * Logging/aggregating OLTT data values from sensors
  * + control logic
  * 
  * 12 July 2019
