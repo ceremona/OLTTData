@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 1000" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1260" height="1000" fill="#ffffff"/>
+  <text x="30" y="38" fill="#10243f" font-size="24" font-weight="700">OLTT data logger — schematic with pin numbers</text>
+  <text x="30" y="62" fill="#5a6b85" font-size="12.5">5 × MAX31850K on ONE shared 1-Wire bus (MCU pin 22) · 3 × MPRLS behind a TCA9548A mux (0x70) · MCU: Teensy 3.x, 3.3 V logic</text>
+
+  <line x1="30" y1="86" x2="58" y2="86" stroke="#1f6fd0" stroke-width="3"/>
+  <text x="66" y="90" font-size="12" fill="#5a6b85">I²C</text>
+  <line x1="128" y1="86" x2="156" y2="86" stroke="#d9822b" stroke-width="3"/>
+  <text x="164" y="90" font-size="12" fill="#5a6b85">1-Wire</text>
+  <line x1="238" y1="86" x2="266" y2="86" stroke="#7a8798" stroke-width="3"/>
+  <text x="274" y="90" font-size="12" fill="#5a6b85">power / discrete</text>
+
+  <!-- ================= MCU ================= -->
+  <rect x="40" y="180" width="205" height="400" rx="10" fill="#f4f7fc" stroke="#10243f" stroke-width="2.5"/>
+  <text x="142" y="208" text-anchor="middle" font-size="16" font-weight="700" fill="#10243f">MCU</text>
+  <text x="142" y="226" text-anchor="middle" font-size="11" fill="#5a6b85">Teensy 3.x · 3.3 V</text>
+  <text x="233" y="219" text-anchor="end" font-size="12" fill="#10243f">3V3</text>
+  <text x="233" y="279" text-anchor="end" font-size="12" fill="#10243f">18  SDA0</text>
+  <text x="233" y="319" text-anchor="end" font-size="12" fill="#10243f">19  SCL0</text>
+  <text x="233" y="384" text-anchor="end" font-size="12" fill="#10243f">22  1-Wire</text>
+  <text x="233" y="464" text-anchor="end" font-size="12" fill="#10243f">13  LED</text>
+  <text x="233" y="544" text-anchor="end" font-size="12" fill="#10243f">GND</text>
+  <line x1="245" y1="215" x2="272" y2="215" stroke="#7a8798" stroke-width="2"/><text x="278" y="211" font-size="10" fill="#7a8798">3V3</text>
+  <line x1="245" y1="540" x2="272" y2="540" stroke="#7a8798" stroke-width="2"/><text x="278" y="544" font-size="10" fill="#7a8798">GND</text>
+  <line x1="245" y1="460" x2="268" y2="460" stroke="#7a8798" stroke-width="2"/>
+  <circle cx="277" cy="460" r="6" fill="#f2c14e" stroke="#b98900" stroke-width="1.5"/>
+  <text x="40" y="602" font-size="10" fill="#8a97ab">Teensy 3.x alternate functions: 18 = A4/SDA0 · 19 = A5/SCL0 · 22 = A8 · 13 = LED</text>
+
+  <!-- I2C: MCU 18 -> mux 23, MCU 19 -> mux 22 -->
+  <line x1="245" y1="275" x2="320" y2="275" stroke="#1f6fd0" stroke-width="3"/>
+  <line x1="245" y1="315" x2="320" y2="315" stroke="#1f6fd0" stroke-width="3"/>
+
+  <!-- ================= MUX ================= -->
+  <rect x="320" y="150" width="235" height="430" rx="10" fill="#eef4ff" stroke="#1f6fd0" stroke-width="2.5"/>
+  <text x="437" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#123a6b">I²C MUX · TCA9548A</text>
+  <text x="437" y="198" text-anchor="middle" font-size="11" fill="#5a6b85">addr 0x70</text>
+  <text x="328" y="279" font-size="11" fill="#123a6b">SDA (23)</text>
+  <text x="328" y="319" font-size="11" fill="#123a6b">SCL (22)</text>
+  <text x="547" y="205" text-anchor="end" font-size="10.5" fill="#123a6b">SD1 (6)</text>
+  <text x="547" y="240" text-anchor="end" font-size="10.5" fill="#123a6b">SC1 (7)</text>
+  <text x="547" y="325" text-anchor="end" font-size="10.5" fill="#123a6b">SD2 (8)</text>
+  <text x="547" y="360" text-anchor="end" font-size="10.5" fill="#123a6b">SC2 (9)</text>
+  <text x="547" y="445" text-anchor="end" font-size="10.5" fill="#123a6b">SD5 (15)</text>
+  <text x="547" y="480" text-anchor="end" font-size="10.5" fill="#123a6b">SC5 (16)</text>
+  <text x="437" y="512" text-anchor="middle" font-size="9.5" fill="#8a97ab">CH3,4,6,7 unused</text>
+  <text x="437" y="536" text-anchor="middle" font-size="9.5" fill="#5a6b85">VCC (24) · GND (12)</text>
+  <text x="437" y="554" text-anchor="middle" font-size="9.5" fill="#5a6b85">A0(1) A1(2) A2(21) → GND</text>
+  <text x="437" y="572" text-anchor="middle" font-size="9.5" fill="#5a6b85">RESET (3) → 3V3</text>
+
+  <!-- mux -> MPRLS wires -->
+  <line x1="555" y1="210" x2="640" y2="210" stroke="#1f6fd0" stroke-width="3"/>
+  <line x1="555" y1="245" x2="640" y2="245" stroke="#1f6fd0" stroke-width="3"/>
+  <line x1="555" y1="330" x2="640" y2="330" stroke="#1f6fd0" stroke-width="3"/>
+  <line x1="555" y1="365" x2="640" y2="365" stroke="#1f6fd0" stroke-width="3"/>
+  <line x1="555" y1="450" x2="640" y2="450" stroke="#1f6fd0" stroke-width="3"/>
+  <line x1="555" y1="485" x2="640" y2="485" stroke="#1f6fd0" stroke-width="3"/>
+
+  <!-- ================= MPRLS ================= -->
+  <rect x="640" y="150" width="290" height="120" rx="10" fill="#eef4ff" stroke="#1f6fd0" stroke-width="2"/>
+  <text x="660" y="176" font-size="12.5" font-weight="700" fill="#123a6b">MPRLS · 0x18</text>
+  <text x="660" y="194" font-size="11.5" fill="#10243f">P_mixing_chamber</text>
+  <text x="646" y="214" font-size="9.5" fill="#1f6fd0">2 SDA</text>
+  <text x="646" y="249" font-size="9.5" fill="#1f6fd0">3 SCL</text>
+  <text x="660" y="238" font-size="9.5" fill="#5a6b85">10 VSS · 12 VDD</text>
+  <text x="660" y="256" font-size="9" fill="#8a97ab">8 EOC / 9 RES: nc · 1 SS,4,5,6,7,11 nc</text>
+
+  <rect x="640" y="290" width="290" height="120" rx="10" fill="#eef4ff" stroke="#1f6fd0" stroke-width="2"/>
+  <text x="660" y="316" font-size="12.5" font-weight="700" fill="#123a6b">MPRLS · 0x18</text>
+  <text x="660" y="334" font-size="11.5" fill="#10243f">P_rotometer</text>
+  <text x="646" y="334" font-size="9.5" fill="#1f6fd0">2 SDA</text>
+  <text x="646" y="369" font-size="9.5" fill="#1f6fd0">3 SCL</text>
+  <text x="660" y="378" font-size="9.5" fill="#5a6b85">10 VSS · 12 VDD</text>
+  <text x="660" y="396" font-size="9" fill="#8a97ab">8 EOC / 9 RES: nc · 1 SS,4,5,6,7,11 nc</text>
+
+  <rect x="640" y="430" width="290" height="120" rx="10" fill="#eef4ff" stroke="#1f6fd0" stroke-width="2"/>
+  <text x="660" y="456" font-size="12.5" font-weight="700" fill="#123a6b">MPRLS · 0x18</text>
+  <text x="660" y="474" font-size="11.5" fill="#10243f">P_separator_column</text>
+  <text x="646" y="454" font-size="9.5" fill="#1f6fd0">2 SDA</text>
+  <text x="646" y="489" font-size="9.5" fill="#1f6fd0">3 SCL</text>
+  <text x="660" y="518" font-size="9.5" fill="#5a6b85">10 VSS · 12 VDD</text>
+  <text x="660" y="536" font-size="9" fill="#8a97ab">8 EOC / 9 RES: nc · 1 SS,4,5,6,7,11 nc</text>
+
+  <!-- ================= 1-Wire bus ================= -->
+  <line x1="245" y1="380" x2="270" y2="380" stroke="#d9822b" stroke-width="3"/>
+  <line x1="270" y1="380" x2="270" y2="650" stroke="#d9822b" stroke-width="3"/>
+  <line x1="270" y1="650" x2="1195" y2="650" stroke="#d9822b" stroke-width="3"/>
+  <text x="282" y="642" font-size="10.5" fill="#b56a12">1-Wire data — single shared bus (MCU pin 22 → DQ of every MAX31850K)</text>
+
+  <!-- pull-up -->
+  <line x1="1195" y1="650" x2="1195" y2="615" stroke="#d9822b" stroke-width="2"/>
+  <rect x="1187" y="570" width="16" height="45" fill="#ffffff" stroke="#7a8798" stroke-width="2"/>
+  <line x1="1195" y1="570" x2="1195" y2="552" stroke="#7a8798" stroke-width="2"/>
+  <line x1="1182" y1="552" x2="1208" y2="552" stroke="#7a8798" stroke-width="3"/>
+  <text x="1152" y="544" font-size="10" fill="#7a8798">3V3</text>
+  <text x="1130" y="600" font-size="10" fill="#5a6b85">4.7 k</text>
+  <text x="1040" y="638" font-size="9.5" fill="#8a97ab">one pull-up for the whole bus</text>
+
+  <!-- bus taps -->
+  <line x1="140" y1="650" x2="140" y2="700" stroke="#d9822b" stroke-width="2"/><circle cx="140" cy="650" r="4" fill="#d9822b"/>
+  <line x1="375" y1="650" x2="375" y2="700" stroke="#d9822b" stroke-width="2"/><circle cx="375" cy="650" r="4" fill="#d9822b"/>
+  <line x1="610" y1="650" x2="610" y2="700" stroke="#d9822b" stroke-width="2"/><circle cx="610" cy="650" r="4" fill="#d9822b"/>
+  <line x1="845" y1="650" x2="845" y2="700" stroke="#d9822b" stroke-width="2"/><circle cx="845" cy="650" r="4" fill="#d9822b"/>
+  <line x1="1080" y1="650" x2="1080" y2="700" stroke="#d9822b" stroke-width="2"/><circle cx="1080" cy="650" r="4" fill="#d9822b"/>
+
+  <!-- ================= MAX31850K breakouts ================= -->
+  <rect x="40" y="700" width="200" height="210" rx="9" fill="#fff4e8" stroke="#d9822b" stroke-width="2"/>
+  <text x="140" y="724" text-anchor="middle" font-size="12" font-weight="700" fill="#b56a12">MAX31850K #1</text>
+  <text x="140" y="741" text-anchor="middle" font-size="9.5" fill="#10243f">T_coldwater_bath</text>
+  <line x1="55" y1="750" x2="225" y2="750" stroke="#e8c9a8" stroke-width="1"/>
+  <text x="140" y="770" text-anchor="middle" font-size="9.5" fill="#5a6b85">1 GND · 4 VDD · 5 DQ</text>
+  <text x="140" y="787" text-anchor="middle" font-size="9.5" fill="#5a6b85">2 T- · 3 T+</text>
+  <text x="140" y="804" text-anchor="middle" font-size="8.5" fill="#8a97ab">6 AD0 7 AD1 8 AD2 9 AD3</text>
+  <text x="140" y="819" text-anchor="middle" font-size="8.5" fill="#8a97ab">10 DNC · EP → GND</text>
+  <line x1="85" y1="846" x2="130" y2="862" stroke="#c0392b" stroke-width="2"/>
+  <line x1="85" y1="882" x2="130" y2="862" stroke="#7a8798" stroke-width="2"/>
+  <circle cx="130" cy="862" r="3" fill="#c0392b"/>
+  <text x="70" y="843" font-size="9" fill="#5a6b85">3 T+</text>
+  <text x="70" y="885" font-size="9" fill="#5a6b85">2 T-</text>
+  <text x="140" y="898" text-anchor="middle" font-size="8.5" fill="#8a97ab">DQ→pin22 · VDD→3V3 · GND</text>
+
+  <rect x="275" y="700" width="200" height="210" rx="9" fill="#fff4e8" stroke="#d9822b" stroke-width="2"/>
+  <text x="375" y="724" text-anchor="middle" font-size="12" font-weight="700" fill="#b56a12">MAX31850K #2</text>
+  <text x="375" y="741" text-anchor="middle" font-size="9.5" fill="#10243f">T_thimble_filter</text>
+  <line x1="290" y1="750" x2="460" y2="750" stroke="#e8c9a8" stroke-width="1"/>
+  <text x="375" y="770" text-anchor="middle" font-size="9.5" fill="#5a6b85">1 GND · 4 VDD · 5 DQ</text>
+  <text x="375" y="787" text-anchor="middle" font-size="9.5" fill="#5a6b85">2 T- · 3 T+</text>
+  <text x="375" y="804" text-anchor="middle" font-size="8.5" fill="#8a97ab">6 AD0 7 AD1 8 AD2 9 AD3</text>
+  <text x="375" y="819" text-anchor="middle" font-size="8.5" fill="#8a97ab">10 DNC · EP → GND</text>
+  <line x1="320" y1="846" x2="365" y2="862" stroke="#c0392b" stroke-width="2"/>
+  <line x1="320" y1="882" x2="365" y2="862" stroke="#7a8798" stroke-width="2"/>
+  <circle cx="365" cy="862" r="3" fill="#c0392b"/>
+  <text x="305" y="843" font-size="9" fill="#5a6b85">3 T+</text>
+  <text x="305" y="885" font-size="9" fill="#5a6b85">2 T-</text>
+  <text x="375" y="898" text-anchor="middle" font-size="8.5" fill="#8a97ab">DQ→pin22 · VDD→3V3 · GND</text>
+
+  <rect x="510" y="700" width="200" height="210" rx="9" fill="#fff4e8" stroke="#d9822b" stroke-width="2"/>
+  <text x="610" y="724" text-anchor="middle" font-size="12" font-weight="700" fill="#b56a12">MAX31850K #3</text>
+  <text x="610" y="741" text-anchor="middle" font-size="9.5" fill="#10243f">T_mixing_chamber</text>
+  <line x1="525" y1="750" x2="695" y2="750" stroke="#e8c9a8" stroke-width="1"/>
+  <text x="610" y="770" text-anchor="middle" font-size="9.5" fill="#5a6b85">1 GND · 4 VDD · 5 DQ</text>
+  <text x="610" y="787" text-anchor="middle" font-size="9.5" fill="#5a6b85">2 T- · 3 T+</text>
+  <text x="610" y="804" text-anchor="middle" font-size="8.5" fill="#8a97ab">6 AD0 7 AD1 8 AD2 9 AD3</text>
+  <text x="610" y="819" text-anchor="middle" font-size="8.5" fill="#8a97ab">10 DNC · EP → GND</text>
+  <line x1="555" y1="846" x2="600" y2="862" stroke="#c0392b" stroke-width="2"/>
+  <line x1="555" y1="882" x2="600" y2="862" stroke="#7a8798" stroke-width="2"/>
+  <circle cx="600" cy="862" r="3" fill="#c0392b"/>
+  <text x="540" y="843" font-size="9" fill="#5a6b85">3 T+</text>
+  <text x="540" y="885" font-size="9" fill="#5a6b85">2 T-</text>
+  <text x="610" y="898" text-anchor="middle" font-size="8.5" fill="#8a97ab">DQ→pin22 · VDD→3V3 · GND</text>
+
+  <rect x="745" y="700" width="200" height="210" rx="9" fill="#fff4e8" stroke="#d9822b" stroke-width="2"/>
+  <text x="845" y="724" text-anchor="middle" font-size="12" font-weight="700" fill="#b56a12">MAX31850K #4</text>
+  <text x="845" y="741" text-anchor="middle" font-size="9.5" fill="#10243f">T_separator_column</text>
+  <line x1="760" y1="750" x2="930" y2="750" stroke="#e8c9a8" stroke-width="1"/>
+  <text x="845" y="770" text-anchor="middle" font-size="9.5" fill="#5a6b85">1 GND · 4 VDD · 5 DQ</text>
+  <text x="845" y="787" text-anchor="middle" font-size="9.5" fill="#5a6b85">2 T- · 3 T+</text>
+  <text x="845" y="804" text-anchor="middle" font-size="8.5" fill="#8a97ab">6 AD0 7 AD1 8 AD2 9 AD3</text>
+  <text x="845" y="819" text-anchor="middle" font-size="8.5" fill="#8a97ab">10 DNC · EP → GND</text>
+  <line x1="790" y1="846" x2="835" y2="862" stroke="#c0392b" stroke-width="2"/>
+  <line x1="790" y1="882" x2="835" y2="862" stroke="#7a8798" stroke-width="2"/>
+  <circle cx="835" cy="862" r="3" fill="#c0392b"/>
+  <text x="775" y="843" font-size="9" fill="#5a6b85">3 T+</text>
+  <text x="775" y="885" font-size="9" fill="#5a6b85">2 T-</text>
+  <text x="845" y="898" text-anchor="middle" font-size="8.5" fill="#8a97ab">DQ→pin22 · VDD→3V3 · GND</text>
+
+  <rect x="980" y="700" width="200" height="210" rx="9" fill="#fff4e8" stroke="#d9822b" stroke-width="2"/>
+  <text x="1080" y="724" text-anchor="middle" font-size="12" font-weight="700" fill="#b56a12">MAX31850K #5</text>
+  <text x="1080" y="741" text-anchor="middle" font-size="9.5" fill="#10243f">T_rotometer</text>
+  <line x1="995" y1="750" x2="1165" y2="750" stroke="#e8c9a8" stroke-width="1"/>
+  <text x="1080" y="770" text-anchor="middle" font-size="9.5" fill="#5a6b85">1 GND · 4 VDD · 5 DQ</text>
+  <text x="1080" y="787" text-anchor="middle" font-size="9.5" fill="#5a6b85">2 T- · 3 T+</text>
+  <text x="1080" y="804" text-anchor="middle" font-size="8.5" fill="#8a97ab">6 AD0 7 AD1 8 AD2 9 AD3</text>
+  <text x="1080" y="819" text-anchor="middle" font-size="8.5" fill="#8a97ab">10 DNC · EP → GND</text>
+  <line x1="1025" y1="846" x2="1070" y2="862" stroke="#c0392b" stroke-width="2"/>
+  <line x1="1025" y1="882" x2="1070" y2="862" stroke="#7a8798" stroke-width="2"/>
+  <circle cx="1070" cy="862" r="3" fill="#c0392b"/>
+  <text x="1010" y="843" font-size="9" fill="#5a6b85">3 T+</text>
+  <text x="1010" y="885" font-size="9" fill="#5a6b85">2 T-</text>
+  <text x="1080" y="898" text-anchor="middle" font-size="8.5" fill="#8a97ab">DQ→pin22 · VDD→3V3 · GND</text>
+
+  <!-- notes -->
+  <rect x="30" y="930" width="1195" height="56" rx="8" fill="#f7f9fc" stroke="#d7dee9" stroke-width="1.5"/>
+  <text x="44" y="950" font-size="11" fill="#5a6b85">Pin numbers are the IC package pins (TCA9548A TSSOP-24; MAX31850K TDFN-10+EP; MPRLS 12-pin). MCU numbers are Teensy 3.x pin labels.</text>
+  <text x="44" y="968" font-size="11" fill="#5a6b85">T- (pin 2) is internally biased — never ground it. Power breakouts on VDD (pin 4), not parasite power, to avoid -250 faults. Only ONE 4.7 k pull-up on the 1-Wire bus.</text>
+</svg>
